@@ -2,6 +2,7 @@
 # Licensed under the MIT license.
 
 import iotc
+import RPi.GPIO as gpio
 from iotc import IOTConnectType, IOTLogLevel
 from random import randint
 
@@ -12,8 +13,7 @@ deviceKey = "Mi4gS7b1NvERSw3XuOa+kUzF/SAT7v3layhw/YmHy1Q="
 iotc = iotc.Device(scopeId, deviceKey, deviceId, IOTConnectType.IOTC_CONNECT_SYMM_KEY)
 iotc.setLogLevel(IOTLogLevel.IOTC_LOGGING_API_ONLY)
 gpio.setmode(gpio.BOARD)
-gpio.setup(11, gpio.OUT)
-gpio.output(11, gpio.LOW)
+gpio.setup(11, gpio.IN)
 
 gCanSend = False
 gCounter = 0
@@ -30,7 +30,6 @@ def onmessagesent(info):
 
 def oncommand(info):
   print("- [oncommand] => " + info.getTag() + " => " + str(info.getPayload()))
-  gpio.output(11, gpio.HIGH)
 
 def onsettingsupdated(info):
   print("- [onsettingsupdated] => " + info.getTag() + " => " + info.getPayload())
